@@ -45,14 +45,14 @@ public class BookController {
     // post request /create-book
     // pass book as request body
     @PostMapping("/create-book")
-    public ResponseEntity createBook(@RequestBody Book book){
+    public ResponseEntity<Book> createBook(@RequestBody Book book){
         book.setId(id);
         bookList.add(book);
         id++;
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
     @GetMapping("/get-book-by-id/{id}")
-    public ResponseEntity getBookById(@PathVariable("id") String id)
+    public ResponseEntity<Book> getBookById(@PathVariable("id") String id)
     {
         for(Book book:bookList)
         {
@@ -64,12 +64,12 @@ public class BookController {
         return null;
     }
     @GetMapping("/get-all-books")
-    public ResponseEntity getAllBooks()
+    public ResponseEntity<List<Book>> getAllBooks()
     {
         return new ResponseEntity<>(bookList,HttpStatus.FOUND);
     }
     @GetMapping("/get-books-by-author")
-    public ResponseEntity getBooksByAuthor(@RequestParam("authorname") String authorname)
+    public ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam("authorname") String authorname)
     {
         List<Book>list=new ArrayList<>();
         for(Book book:bookList)
@@ -82,7 +82,7 @@ public class BookController {
         return new ResponseEntity<>(list,HttpStatus.FOUND);
     }
     @GetMapping("/get-books-by-genre")
-    public ResponseEntity getBookByGenre(@RequestParam("genre") String genre)
+    public ResponseEntity<List<Book>> getBookByGenre(@RequestParam("genre") String genre)
     {
         List<Book>list=new ArrayList<>();
         for(Book book:bookList)
@@ -95,7 +95,7 @@ public class BookController {
         return new ResponseEntity<>(list,HttpStatus.FOUND);
     }
     @DeleteMapping("/delete-book-by-id/{id}")
-    public ResponseEntity deleteBookById(@PathVariable("id") String id)
+    public ResponseEntity<String> deleteBookById(@PathVariable("id") String id)
     {
         int flag=0;
         for(Book book:bookList)
@@ -111,7 +111,7 @@ public class BookController {
         return  new ResponseEntity<>("not found",HttpStatus.NOT_FOUND);
     }
     @DeleteMapping("/delete-all-books")
-    public ResponseEntity deleteAllBooks()
+    public ResponseEntity<String> deleteAllBooks()
     {
         for(Book book:bookList)
         {
