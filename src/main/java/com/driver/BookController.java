@@ -45,9 +45,73 @@ public class BookController {
     // post request /create-book
     // pass book as request body
     @PostMapping("/create-book")
-    public ResponseEntity<Book> createBook(@RequestBody Book book){
-        // Your code goes here.
+    public ResponseEntity createBook(@RequestBody Book book){
+        bookList.add(book);
         return new ResponseEntity<>(book, HttpStatus.CREATED);
+    }
+    @GetMapping("/get-book-by-id/{id}")
+    public ResponseEntity getBookById(@PathVariable("id") int id)
+    {
+        for(Book book:bookList)
+        {
+            if(book.getId()==id)
+            {
+                return new ResponseEntity<>(book,HttpStatus.FOUND);
+            }
+        }
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+    }
+    @GetMapping("/get-all-books")
+    public ResponseEntity getAllBooks()
+    {
+        return new ResponseEntity<>(bookList,HttpStatus.FOUND);
+    }
+    @GetMapping("/get-books-by-author")
+    public ResponseEntity getBooksByAuthor(@RequestParam("authorname") String authorname)
+    {
+        ArrayList<Book>list=new ArrayList<>();
+        for(Book book:bookList)
+        {
+            if(book.getAuthor().equals(authorname))
+            {
+                list.add(book);
+            }
+        }
+        return new ResponseEntity<>(list,HttpStatus.FOUND);
+    }
+    @GetMapping("/get-books-by-genre")
+    public ResponseEntity getBookByGenre(@RequestParam("genre") String genre)
+    {
+        ArrayList<Book>list=new ArrayList<>();
+        for(Book book:bookList)
+        {
+            if(book.getGenre().equals(genre))
+            {
+                list.add(book);
+            }
+        }
+        return new ResponseEntity<>(list,HttpStatus.FOUND);
+    }
+    @DeleteMapping("/delete-book-by-id/{id}")
+    public ResponseEntity deleteBookById(@PathVariable("id") int id)
+    {
+        for(Book book:bookList)
+        {
+            if(book.getId()==id)
+            {
+                bookList.remove(book);
+            }
+        }
+        return new ResponseEntity<>("Books by id deleted successfully",HttpStatus.ACCEPTED);
+    }
+    @DeleteMapping("/delete-all-books")
+    public ResponseEntity deleteAllBooks()
+    {
+        for(Book book:bookList)
+        {
+            bookList.remove(book);
+        }
+        return new ResponseEntity<>("All books deleted successfully",HttpStatus.ACCEPTED);
     }
 
     // get request /get-book-by-id/{id}
