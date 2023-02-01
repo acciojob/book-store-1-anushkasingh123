@@ -82,7 +82,7 @@ public class BookController {
         return new ResponseEntity<>(list,HttpStatus.FOUND);
     }
     @GetMapping("/get-books-by-genre")
-    public ResponseEntity<List<Book>> getBookByGenre(@RequestParam("genre") String genre)
+    public ResponseEntity<List<Book>> getBooksByGenre(@RequestParam("genre") String genre)
     {
         List<Book>list=new ArrayList<>();
         for(Book book:bookList)
