@@ -46,15 +46,17 @@ public class BookController {
     // pass book as request body
     @PostMapping("/create-book")
     public ResponseEntity createBook(@RequestBody Book book){
+        book.setId(id);
         bookList.add(book);
+        id++;
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
     @GetMapping("/get-book-by-id/{id}")
-    public ResponseEntity getBookById(@PathVariable("id") int id)
+    public ResponseEntity getBookById(@PathVariable("id") String id)
     {
         for(Book book:bookList)
         {
-            if(book.getId()==id)
+            if(book.getId()==Integer.parseInt(id))
             {
                 return new ResponseEntity<>(book,HttpStatus.FOUND);
             }
@@ -93,11 +95,11 @@ public class BookController {
         return new ResponseEntity<>(list,HttpStatus.FOUND);
     }
     @DeleteMapping("/delete-book-by-id/{id}")
-    public ResponseEntity deleteBookById(@PathVariable("id") int id)
+    public ResponseEntity deleteBookById(@PathVariable("id") String id)
     {
         for(Book book:bookList)
         {
-            if(book.getId()==id)
+            if(book.getId()==Integer.parseInt(id))
             {
                 bookList.remove(book);
             }
