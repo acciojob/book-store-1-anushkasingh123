@@ -61,7 +61,7 @@ public class BookController {
                 return new ResponseEntity<>(book,HttpStatus.FOUND);
             }
         }
-        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return null;
     }
     @GetMapping("/get-all-books")
     public ResponseEntity getAllBooks()
@@ -71,7 +71,7 @@ public class BookController {
     @GetMapping("/get-books-by-author")
     public ResponseEntity getBooksByAuthor(@RequestParam("authorname") String authorname)
     {
-        ArrayList<Book>list=new ArrayList<>();
+        List<Book>list=new ArrayList<>();
         for(Book book:bookList)
         {
             if(book.getAuthor().equals(authorname))
@@ -84,7 +84,7 @@ public class BookController {
     @GetMapping("/get-books-by-genre")
     public ResponseEntity getBookByGenre(@RequestParam("genre") String genre)
     {
-        ArrayList<Book>list=new ArrayList<>();
+        List<Book>list=new ArrayList<>();
         for(Book book:bookList)
         {
             if(book.getGenre().equals(genre))
@@ -97,14 +97,18 @@ public class BookController {
     @DeleteMapping("/delete-book-by-id/{id}")
     public ResponseEntity deleteBookById(@PathVariable("id") String id)
     {
+        int flag=0;
         for(Book book:bookList)
         {
             if(book.getId()==Integer.parseInt(id))
             {
                 bookList.remove(book);
+                flag=1;
             }
         }
-        return new ResponseEntity<>("Books by id deleted successfully",HttpStatus.ACCEPTED);
+        if(flag==1)
+            return new ResponseEntity<>("Books by id deleted successfully",HttpStatus.ACCEPTED);
+        return  new ResponseEntity<>("not found",HttpStatus.NOT_FOUND);
     }
     @DeleteMapping("/delete-all-books")
     public ResponseEntity deleteAllBooks()
